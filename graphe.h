@@ -26,12 +26,12 @@ typedef struct sommet_type
 } sommet_t;
 
 /*Valide*/
-void creerListesAdjacences(graphe_t *graph);
+void creerListesAdjacences(graphe_t *graph, char *fileName);
 /*Valide*/
 void afficherListesAdjacences(graphe_t *graph);
-void creerMatriceAdjacences(graphe_t *graph);
+void creerMatriceAdjacences(graphe_t *graph, char *fileName);
 void afficherMatriceAdjacences(graphe_t *graph);
-graphe_t *creerGraphe(int choice); /* choice = 1 : liste ; matrice */
+graphe_t *creerGraphe(int choice, char *fileName); /* choice = 1 : liste ; matrice */
 void detruireGraphe(graphe_t *graph);
 void parcoursLargeur(graphe_t *graph, int sommetOrigine);
 

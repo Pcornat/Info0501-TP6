@@ -7,12 +7,12 @@
 #include "outilsListe.h"
 #include "file.h"
 
-void creerListesAdjacences(graphe_t *graph)
+void creerListesAdjacences(graphe_t *graph, char *fileName)
 {
 	FILE *file = NULL;
 	int indice, donnee, poids, i;
 	char buffer[27]; /* buffer suffisamment grand */
-	file = fopen("graphe1.txt", "r");
+	file = fopen(fileName, "r");
 	if (file == NULL)
 	{
 		fprintf(stderr, "Ouverture du fichier impossible\n");
@@ -78,12 +78,12 @@ void afficherListesAdjacences(graphe_t *graph)
 	}
 }
 
-void creerMatriceAdjacences(graphe_t *graph)
+void creerMatriceAdjacences(graphe_t *graph, char *fileName)
 {
 	FILE *file = NULL;
 	int indice = 0, donnee = 0, i, j;
 	char buffer[27];
-	file = fopen("graphe1.txt", "r");
+	file = fopen(fileName, "r");
 	if (file == NULL)
 	{
 		fprintf(stderr, "Ouverture du fichier impossible\n");
@@ -152,17 +152,17 @@ void afficherMatriceAdjacences(graphe_t *graph)
 	}
 }
 
-graphe_t *creerGraphe(int choice)
+graphe_t *creerGraphe(int choice, char *fileName)
 { /* choice = 1 : liste ; matrice */
 	graphe_t *graph = NULL;
 	graph = malloc(sizeof(graphe_t));
 	if (choice)
 	{
-		creerListesAdjacences(graph);
+		creerListesAdjacences(graph, fileName);
 	}
 	else
 	{
-		creerMatriceAdjacences(graph);
+		creerMatriceAdjacences(graph, fileName);
 	}
 	return graph;
 }
