@@ -10,8 +10,8 @@
 void creerListesAdjacences(graphe_t *graph)
 {
 	FILE *file = NULL;
-	int indice = 0, donnee = 0;
-	char buffer[27]; // buffer suffisamment grand
+	int indice, donnee, poids, i;
+	char buffer[27]; /* buffer suffisamment grand */
 	file = fopen("graphe1.txt", "r");
 	if (file == NULL)
 	{
@@ -25,8 +25,8 @@ void creerListesAdjacences(graphe_t *graph)
 		{
 			fscanf(file, "%d", &graph->nSommets);
 			graph->adj = (liste_t **)malloc(graph->nSommets * sizeof(liste_t *));
-			//Créer tableau de listes adjacences
-			for (int i = 0; i < graph->nSommets; ++i)
+			/* Créer tableau de listes adjacences */
+			for (i = 0; i < graph->nSommets; ++i)
 			{
 				graph->adj[i] = initialiserListe();
 			}
@@ -37,7 +37,7 @@ void creerListesAdjacences(graphe_t *graph)
 		}
 		else if (strcmp(buffer, "value") == 0)
 		{
-			fscanf(file, "%d", &graph->value);
+			fscanf(file, "%d", &graph->evalue);
 		}
 		else if (strcmp(buffer, "complet") == 0)
 		{
@@ -45,15 +45,21 @@ void creerListesAdjacences(graphe_t *graph)
 		}
 		else if (strcmp(buffer, "debutDefAretes") == 0)
 		{
+			/**
+			 * TODO: modifier pour intégrer le poids dans la création des cellules.
+			 * Faite.
+			 */
 			while (fscanf(file, "%s", buffer), strcmp(buffer, "finDefAretes") != 0)
 			{
 				indice = atoi(buffer);
 				fscanf(file, "%s", buffer);
 				donnee = atoi(buffer);
-				inserer(graph->adj[indice], initialiserCellule(donnee));
+				fscanf(file, "%s", buffer);
+				poids = atoi(buffer);
+				inserer(graph->adj[indice], initialiserCellule(donnee, poids));
 				if (!graph->oriente)
 				{
-					inserer(graph->adj[donnee], initialiserCellule(indice));
+					inserer(graph->adj[donnee], initialiserCellule(indice, poids));
 				}
 			}
 		}
@@ -75,8 +81,8 @@ void afficherListesAdjacences(graphe_t *graph)
 void creerMatriceAdjacences(graphe_t *graph)
 {
 	FILE *file = NULL;
-	int indice = 0, donnee = 0;
-	char buffer[27]; //suffisamment grand
+	int indice = 0, donnee = 0, i, j;
+	char buffer[27];
 	file = fopen("graphe1.txt", "r");
 	if (file == NULL)
 	{
@@ -90,15 +96,15 @@ void creerMatriceAdjacences(graphe_t *graph)
 			fscanf(file, "%d", &graph->nSommets);
 			graph->matrice_adj = (int **)malloc(
 				sizeof(int *) * graph->nSommets);
-			//Créer tableau de listes adjacences
-			for (int i = 0; i < graph->nSommets; ++i)
+			/* Créer tableau de listes adjacences */
+			for (i = 0; i < graph->nSommets; ++i)
 			{
 				graph->matrice_adj[i] = (int *)malloc(
 					sizeof(int) * graph->nSommets);
 			}
-			for (int i = 0; i < graph->nSommets; ++i)
+			for (i = 0; i < graph->nSommets; ++i)
 			{
-				for (int j = 0; j < graph->nSommets; ++j)
+				for (j = 0; j < graph->nSommets; ++j)
 				{
 					graph->matrice_adj[i][j] = 0;
 				}
@@ -110,7 +116,7 @@ void creerMatriceAdjacences(graphe_t *graph)
 		}
 		else if (strcmp(buffer, "value") == 0)
 		{
-			fscanf(file, "%d", &graph->value);
+			fscanf(file, "%d", &graph->evalue);
 		}
 		else if (strcmp(buffer, "complet") == 0)
 		{
@@ -135,9 +141,10 @@ void creerMatriceAdjacences(graphe_t *graph)
 
 void afficherMatriceAdjacences(graphe_t *graph)
 {
-	for (int i = 0; i < graph->nSommets; ++i)
+	int i, j;
+	for (i = 0; i < graph->nSommets; ++i)
 	{
-		for (int j = 0; j < graph->nSommets; ++j)
+		for (j = 0; j < graph->nSommets; ++j)
 		{
 			printf("%d\t", graph->matrice_adj[i][j]);
 		}
@@ -146,7 +153,7 @@ void afficherMatriceAdjacences(graphe_t *graph)
 }
 
 graphe_t *creerGraphe(int choice)
-{ // choice = 1 : liste ; matrice
+{ /* choice = 1 : liste ; matrice */
 	graphe_t *graph = NULL;
 	graph = malloc(sizeof(graphe_t));
 	if (choice)
@@ -162,17 +169,18 @@ graphe_t *creerGraphe(int choice)
 
 void detruireGraphe(graphe_t *graph)
 {
+	int i;
 	if (graph->adj != NULL)
 	{
-		for (int i = 0; i < graph->nSommets; ++i)
+		for (i = 0; i < graph->nSommets; ++i)
 		{
-			detruireListe(&graph->adj[i][0]);
+			detruireListe(graph->adj[i]);
 		}
 		free(graph->adj);
 	}
 	else if (graph->matrice_adj != NULL)
 	{
-		for (int i = 0; i < graph->nSommets; ++i)
+		for (i = 0; i < graph->nSommets; ++i)
 		{
 			free(graph->matrice_adj[i]);
 		}
@@ -201,18 +209,18 @@ void parcoursLargeur(graphe_t *graph, int sommetOrigine)
 	sommet[sommetOrigine].couleur = gris;
 	sommet[sommetOrigine].distance = 0;
 	sommet[sommetOrigine].pere = NULL;
-	enfile(queue, graph->adj[sommetOrigine]->tete->value);
+	enfile(queue, graph->adj[sommetOrigine]->tete->noeud);
 	while (!file_isEmpty(queue))
 	{
 		u = front(queue);
 		for (cell = graph->adj[u]->tete; cell != NULL; cell = cell->succ)
 		{
-			if (sommet[cell->value].couleur == blanc)
+			if (sommet[cell->noeud].couleur == blanc)
 			{
-				sommet[cell->value].couleur = gris;
-				sommet[cell->value].distance = sommet[u].distance + 1;
-				sommet[cell->value].pere = &(sommet[u]);
-				enfile(queue, cell->value);
+				sommet[cell->noeud].couleur = gris;
+				sommet[cell->noeud].distance = sommet[u].distance + 1;
+				sommet[cell->noeud].pere = &(sommet[u]);
+				enfile(queue, cell->noeud);
 			}
 		}
 		sommet[u].couleur = noir;

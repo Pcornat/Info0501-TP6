@@ -6,9 +6,9 @@ void afficherListe(liste_t *pliste)
 {
 	cellule_t *ptemp;
 	ptemp = pliste->tete;
-	do
+	while (ptemp != NULL)
 	{
-		printf("%d --> ", ptemp->value);
+		printf("%d --> ", ptemp->noeud);
 		if (ptemp->succ != NULL)
 		{
 			ptemp = ptemp->succ;
@@ -18,5 +18,5 @@ void afficherListe(liste_t *pliste)
 			printf("NULL");
 			ptemp = NULL;
 		}
-	} while (ptemp != NULL);
+	}
 }

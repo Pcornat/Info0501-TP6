@@ -8,7 +8,7 @@ file_t *creerFile(unsigned int capacite)
 	queue->capacity = capacite;
 	queue->front = queue->size = 0;
 	queue->rear = capacite - 1;
-	queue->array = (int *)malloc(queue->capacity * sizeof(int ));
+	queue->array = (int *)malloc(queue->capacity * sizeof(int));
 	return queue;
 }
 
@@ -40,9 +40,10 @@ void enfile(file_t *queue, int item)
 
 int defile(file_t *queue)
 {
+	int item;
 	if (file_isEmpty(queue))
 		return INT_MAX;
-	int item = queue->array[queue->front];
+	item = queue->array[queue->front];
 	queue->front = (queue->front + 1) % queue->capacity;
 	--(queue->size);
 	return item;
