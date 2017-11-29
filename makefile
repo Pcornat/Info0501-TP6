@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-pipe -ansi -W -Wall -Wextra -pedantic -fmessage-length=0
+CFLAGS=-pipe -ansi -W -Wall -Wextra -Wpadded -pedantic -fmessage-length=0
 LDFLAGS=-pipe
 SRC=$(wildcard *.c)
 OBJ=$(SRC:.c=.o)

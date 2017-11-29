@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "graphe.h"
+#include "algo_parcours.h"
 
 /**
  * arguments : nom_texte choix_liste/matrice sommet_origine_parcours
