@@ -5,6 +5,7 @@
 #include "cellule.h"
 #include "outilsListe.h"
 #include "file.h"
+#include "outilsGraphe.h"
 
 void parcoursLargeur(graphe_t *graph, int sommetOrigine)
 {
@@ -20,12 +21,12 @@ void parcoursLargeur(graphe_t *graph, int sommetOrigine)
     {
         sommet[i].couleur = blanc;
         sommet[i].distance = INT_MAX;
-        sommet[i].pere = NULL;
+        sommet[i].pere = -1;
     }
     sommet[sommetOrigine].couleur = gris;
     sommet[sommetOrigine].distance = 0;
-    sommet[sommetOrigine].pere = NULL;
-    enfile(queue, graph->adj[sommetOrigine]->tete->noeud);
+    sommet[sommetOrigine].pere = -1;
+    enfile(queue, sommetOrigine);
     while (!file_isEmpty(queue))
     {
         u = front(queue);
@@ -35,7 +36,7 @@ void parcoursLargeur(graphe_t *graph, int sommetOrigine)
             {
                 sommet[cell->noeud].couleur = gris;
                 sommet[cell->noeud].distance = sommet[u].distance + 1;
-                sommet[cell->noeud].pere = &(sommet[u]);
+                sommet[cell->noeud].pere = u;
                 enfile(queue, cell->noeud);
             }
         }

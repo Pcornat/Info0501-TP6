@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 	choix = atoi(argv[2]), sommet = atoi(argv[3]);
 	graphe2 = creerGraphe(choix, argv[1]);
 	afficherListesAdjacences(graphe2);
-	/* parcoursLargeur(graphe2, sommet); */
+	parcoursLargeur(graphe2, sommet);
 	detruireGraphe(graphe2);
 	return EXIT_SUCCESS;
 }

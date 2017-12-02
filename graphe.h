@@ -22,7 +22,7 @@ typedef struct sommet_type
 {
 	couleur_t couleur;
 	int distance;
-	struct sommet_type *pere;
+	int pere;
 } sommet_t;
 
 /*Valide*/

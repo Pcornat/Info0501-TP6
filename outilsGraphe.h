@@ -2,6 +2,6 @@
 #define __OUTILSGRAPHE_H__
 #include "graphe.h"
 
-void afficherChemin(graphe_t *graph, sommet_t sommet[]);
+void afficherChemin(graphe_t *graph, int s, int v, sommet_t *sommet);
 
 #endif
