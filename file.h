@@ -1,7 +1,6 @@
 #ifndef FILE_H_
 #define FILE_H_
 
-#include "cellule.h"
 
 typedef struct file
 {
@@ -10,7 +9,7 @@ typedef struct file
 } file_t;
 
 file_t *creerFile(unsigned int capacite);
-void detruireFile(file_t *queue);
+void detruireFile(file_t **queue);
 int file_isFull(file_t *queue);
 int file_isEmpty(file_t *queue);
 void enfile(file_t *queue, int item);

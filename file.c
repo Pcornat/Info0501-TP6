@@ -1,22 +1,23 @@
 #include "file.h"
-#include <stdlib.h>
+
 #include <limits.h>
+#include <stdlib.h>
 
 file_t *creerFile(unsigned int capacite)
 {
-	file_t *queue = (file_t *)malloc(sizeof(file_t));
+	file_t *queue = (file_t *) malloc(sizeof(file_t));
+	queue->array = (int *) malloc(queue->capacity * sizeof(int));
 	queue->capacity = capacite;
 	queue->front = queue->size = 0;
 	queue->rear = capacite - 1;
-	queue->array = (int *)malloc(queue->capacity * sizeof(int));
 	return queue;
 }
 
-void detruireFile(file_t *queue)
+void detruireFile(file_t **queue)
 {
-	free(queue->array);
-	free(queue);
-	queue = NULL;
+	free((*queue)->array);
+	free(*queue);
+	*queue = NULL;
 }
 
 int file_isFull(file_t *queue)

@@ -27,5 +27,5 @@ main.o:	$(DEP)
 clean:
 	rm -rf *.o
 
-mrproper: clean
-	rm -rf $(EXEC)
+mrproper:	clean
+	rm -f $(EXEC)

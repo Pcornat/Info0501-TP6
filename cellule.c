@@ -1,4 +1,5 @@
 #include "cellule.h"
+
 #include <stdlib.h>
 
 cellule_t *initialiserCellule(int noeud, int poids)

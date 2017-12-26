@@ -3,7 +3,8 @@
 
 #include "liste.h"
 
-typedef struct {
+typedef struct
+{
 	int nSommets; /* nombre de sommet*/
 	int oriente; /*oriente : 1 ; sinon 0 */
 	int evalue; /*évalué : 1 ; sinon 0 */

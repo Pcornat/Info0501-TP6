@@ -10,6 +10,6 @@ typedef struct cellule_type
 } cellule_t;
 
 cellule_t *initialiserCellule(int noeud, int poids); /*Valide*/
-void detruireCellule(cellule_t **dead);   /*Valide*/
+void detruireCellule(cellule_t **dead); /*Valide*/
 
 #endif /* CELLULE_H_ */
