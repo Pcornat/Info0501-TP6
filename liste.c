@@ -1,7 +1,6 @@
 #include "liste.h"
+
 #include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
 
 liste_t *initialiserListe()
 {
