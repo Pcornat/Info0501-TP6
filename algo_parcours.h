@@ -3,11 +3,13 @@
 
 #include "graphe.h"
 
-typedef enum {
+typedef enum
+{
 	blanc, gris, noir
 } couleur_t;
 
-typedef struct {
+typedef struct
+{
 	couleur_t couleur;
 	int distance;
 	int pere;
