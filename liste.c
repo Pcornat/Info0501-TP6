@@ -5,7 +5,7 @@
 liste_t *initialiserListe()
 {
 	liste_t *liste = NULL;
-	liste = malloc(sizeof(liste_t));
+	liste = (liste_t*) malloc(sizeof(liste_t));
 	liste->tete = NULL;
 	return liste;
 }
