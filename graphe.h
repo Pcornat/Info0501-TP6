@@ -19,7 +19,7 @@ void creerListesAdjacences(graphe_t *graph, char *fileName);
 void afficherListesAdjacences(graphe_t *graph);
 void creerMatriceAdjacences(graphe_t *graph, char *fileName);
 void afficherMatriceAdjacences(graphe_t *graph);
-graphe_t *creerGraphe(int choice, char *fileName); /* choice = 1 : liste ; matrice */
+graphe_t *creerGraphe(char *fileName); /* choice = 1 : liste ; matrice */
 void detruireGraphe(graphe_t *graph);
 
 #endif /* GRAPHE_H_ */

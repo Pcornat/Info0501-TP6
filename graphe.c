@@ -80,7 +80,7 @@ void afficherListesAdjacences(graphe_t *graph)
 void creerMatriceAdjacences(graphe_t *graph, char *fileName)
 {
 	FILE *file = NULL;
-	int indice = 0, donnee = 0, i, j;
+	int indice = 0, donnee = 0, poids, i, j;
 	char buffer[27];
 	file = fopen(fileName, "r");
 	if (file == NULL)
@@ -129,10 +129,12 @@ void creerMatriceAdjacences(graphe_t *graph, char *fileName)
 				indice = atoi(buffer);
 				fscanf(file, "%s", buffer);
 				donnee = atoi(buffer);
-				graph->matrice_adj[indice][donnee] = 1;
+				fscanf(file, "%s", buffer);
+				poids = atoi(buffer);
+				graph->matrice_adj[indice][donnee] = poids;
 				if (!graph->oriente)
 				{
-					graph->matrice_adj[donnee][indice] = 1;
+					graph->matrice_adj[donnee][indice] = poids;
 				}
 			}
 		}
@@ -142,8 +144,15 @@ void creerMatriceAdjacences(graphe_t *graph, char *fileName)
 void afficherMatriceAdjacences(graphe_t *graph)
 {
 	int i, j;
+	printf("\t");
 	for (i = 0; i < graph->nSommets; ++i)
 	{
+		printf("%d\t", i);
+	}
+	puts("");
+	for (i = 0; i < graph->nSommets; ++i)
+	{
+		printf("%d\t", i);
 		for (j = 0; j < graph->nSommets; ++j)
 		{
 			printf("%d\t", graph->matrice_adj[i][j]);
@@ -152,18 +161,12 @@ void afficherMatriceAdjacences(graphe_t *graph)
 	}
 }
 
-graphe_t* creerGraphe(int choice, char *fileName)
+graphe_t* creerGraphe(char *fileName)
 { /* choice = 1 : liste ; matrice */
 	graphe_t *graph = NULL;
 	graph = (graphe_t*) malloc(sizeof(graphe_t));
-	if (choice)
-	{
-		creerListesAdjacences(graph, fileName);
-	}
-	else
-	{
-		creerMatriceAdjacences(graph, fileName);
-	}
+	creerListesAdjacences(graph, fileName);
+	creerMatriceAdjacences(graph, fileName);
 	return graph;
 }
 
@@ -178,7 +181,7 @@ void detruireGraphe(graphe_t *graph)
 		}
 		free(graph->adj);
 	}
-	else if (graph->matrice_adj != NULL)
+	if (graph->matrice_adj != NULL)
 	{
 		for (i = 0; i < graph->nSommets; ++i)
 		{
