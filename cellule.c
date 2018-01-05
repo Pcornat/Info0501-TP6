@@ -5,7 +5,7 @@
 cellule_t *initialiserCellule(int noeud, int poids)
 {
 	cellule_t *cell = NULL;
-	cell = malloc(sizeof(cellule_t));
+	cell = (cellule_t*) malloc(sizeof(cellule_t));
 	cell->succ = cell->pred = NULL;
 	cell->noeud = noeud;
 	cell->poids = poids;
