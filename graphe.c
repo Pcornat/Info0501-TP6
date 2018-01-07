@@ -117,7 +117,7 @@ void afficherListesIncidences(graphe_t *graph)
 	int i;
 	for (i = 0; graph->nSommets; ++i)
 	{
-		printf("(%d)\t");
+		printf("(%d)\t", i);
 		afficherListeIncidence(graph->inc[i]);
 		printf("\n");
 	}

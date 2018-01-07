@@ -1,6 +1,8 @@
 #ifndef __UTIL_H__
 #define __UTIL_H__
 
-void echanger(int * a, int * b);
+#include "arete.h"
+
+void echanger(arete_t *a, arete_t *b);
 
 #endif

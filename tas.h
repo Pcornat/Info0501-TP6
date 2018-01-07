@@ -1,11 +1,13 @@
 #ifndef __TAS_H__
 #define  __TAS_H__
 
+#include "arete.h"
+
 typedef struct
 {
 	int longueur;
 	int taille;
-	int * tab;
+	arete_t *tab;
 } tas_t;
 
 int parent(int i);

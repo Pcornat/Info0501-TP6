@@ -1,8 +1,8 @@
 #include "util.h"
 
-void echanger(int * a, int * b)
+void echanger(arete_t *a, arete_t *b)
 {
-	int p = *a;
+	arete_t p = *a;
 	*a = *b;
 	*b = p;
 }
