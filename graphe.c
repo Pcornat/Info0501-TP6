@@ -1,10 +1,11 @@
 #include "graphe.h"
 
+#include <bits/types/FILE.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "cellule.h"
+#include "cellule_adjacence.h"
 #include "outilsListe.h"
 
 void creerListesAdjacences(graphe_t *graph, char *fileName)
@@ -24,12 +25,12 @@ void creerListesAdjacences(graphe_t *graph, char *fileName)
 		if (strcmp(buffer, "nSommets") == 0)
 		{
 			fscanf(file, "%d", &graph->nSommets);
-			graph->adj = (liste_t **) malloc(
-					graph->nSommets * sizeof(liste_t *));
+			graph->adj = (listeAdjacence_t **) malloc(
+					graph->nSommets * sizeof(listeAdjacence_t *));
 			/* Créer tableau de listes adjacences */
 			for (i = 0; i < graph->nSommets; ++i)
 			{
-				graph->adj[i] = initialiserListe();
+				graph->adj[i] = initialiserListeAdjacence();
 			}
 		}
 		else if (strcmp(buffer, "oriente") == 0)
@@ -52,14 +53,32 @@ void creerListesAdjacences(graphe_t *graph, char *fileName)
 				indice = atoi(buffer);
 				fscanf(file, "%s", buffer);
 				donnee = atoi(buffer);
-				fscanf(file, "%s", buffer);
-				poids = atoi(buffer);
-				inserer(graph->adj[indice], initialiserCellule(donnee, poids));
-				if (!graph->oriente)
+				/**
+				 * Si le graphe est évalué, création de la liste d'incidence en même temps.
+				 */
+				if (graph->evalue)
 				{
-					inserer(graph->adj[donnee],
-							initialiserCellule(indice, poids));
+					fscanf(file, "%s", buffer);
+					poids = atoi(buffer);
+					insererCelluleAdjacence(graph->adj[indice],
+							initialiserCelluleAdjacence(donnee, poids));
+					if (!graph->oriente)
+					{
+						insererCelluleAdjacence(graph->adj[donnee],
+								initialiserCelluleAdjacence(indice, poids));
+					}
 				}
+				else
+				{
+					insererCelluleAdjacence(graph->adj[indice],
+							initialiserCelluleAdjacence(donnee, 0));
+					if (!graph->oriente)
+					{
+						insererCelluleAdjacence(graph->adj[donnee],
+								initialiserCelluleAdjacence(indice, 0));
+					}
+				}
+
 			}
 		}
 	}
@@ -72,7 +91,7 @@ void afficherListesAdjacences(graphe_t *graph)
 	for (i = 0; i < graph->nSommets; ++i)
 	{
 		printf("(%d)\t", i);
-		afficherListe(&graph->adj[i][0]);
+		afficherListeAdjacence(&graph->adj[i][0]);
 		printf("\n");
 	}
 }
@@ -129,13 +148,25 @@ void creerMatriceAdjacences(graphe_t *graph, char *fileName)
 				indice = atoi(buffer);
 				fscanf(file, "%s", buffer);
 				donnee = atoi(buffer);
-				fscanf(file, "%s", buffer);
-				poids = atoi(buffer);
-				graph->matrice_adj[indice][donnee] = poids;
-				if (!graph->oriente)
+				if (graph->evalue)
 				{
-					graph->matrice_adj[donnee][indice] = poids;
+					fscanf(file, "%s", buffer);
+					poids = atoi(buffer);
+					graph->matrice_adj[indice][donnee] = poids;
+					if (!graph->oriente)
+					{
+						graph->matrice_adj[donnee][indice] = poids;
+					}
 				}
+				else
+				{
+					graph->matrice_adj[indice][donnee] = 1;
+					if (!graph->oriente)
+					{
+						graph->matrice_adj[donnee][indice] = 1;
+					}
+				}
+
 			}
 		}
 	}
@@ -162,7 +193,7 @@ void afficherMatriceAdjacences(graphe_t *graph)
 }
 
 graphe_t* creerGraphe(char *fileName)
-{ /* choice = 1 : liste ; matrice */
+{
 	graphe_t *graph = NULL;
 	graph = (graphe_t*) malloc(sizeof(graphe_t));
 	creerListesAdjacences(graph, fileName);
@@ -177,7 +208,7 @@ void detruireGraphe(graphe_t *graph)
 	{
 		for (i = 0; i < graph->nSommets; ++i)
 		{
-			detruireListe(graph->adj[i]);
+			detruireListeAdjacence(graph->adj[i]);
 		}
 		free(graph->adj);
 	}

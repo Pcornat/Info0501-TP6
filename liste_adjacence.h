@@ -1,17 +1,17 @@
-#ifndef LISTE_H_
-#define LISTE_H_
+#ifndef LISTE_ADJACENCE_H_
+#define LISTE_ADJACENCE_H_
 
-#include "cellule.h"
+#include "cellule_adjacence.h"
 
 typedef struct
 {
-	cellule_t *tete;
-} liste_t;
+	celluleAdjacence_t *tete;
+} listeAdjacence_t;
 
-liste_t *initialiserListe(); /* Valide */
-void inserer(liste_t *pliste, cellule_t *pcell); /* Valide */
-cellule_t *rechercher(liste_t *pliste, int value);
-void supprimer(liste_t *pliste, cellule_t *pcell);
-void detruireListe(liste_t *pliste);
+listeAdjacence_t *initialiserListeAdjacence(); /* Valide */
+void insererCelluleAdjacence(listeAdjacence_t *pliste, celluleAdjacence_t *pcell); /* Valide */
+celluleAdjacence_t *rechercherCelluleAdjacence(listeAdjacence_t *pliste, int value);
+void supprimerCelluleAdjacence(listeAdjacence_t *pliste, celluleAdjacence_t *pcell);
+void detruireListeAdjacence(listeAdjacence_t *pliste);
 
-#endif /* LISTE_H_ */
+#endif /* LISTE_ADJACENCE_H_ */

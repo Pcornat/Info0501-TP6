@@ -2,9 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void afficherListe(liste_t *pliste)
+void afficherListeAdjacence(listeAdjacence_t *pliste)
 {
-	cellule_t *ptemp;
+	celluleAdjacence_t *ptemp;
 	ptemp = pliste->tete;
 	while (ptemp != NULL)
 	{

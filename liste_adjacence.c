@@ -1,16 +1,16 @@
-#include "liste.h"
-
 #include <stdlib.h>
+#include "liste_adjacence.h"
 
-liste_t *initialiserListe()
+listeAdjacence_t *initialiserListeAdjacence()
 {
-	liste_t *liste = NULL;
-	liste = (liste_t*) malloc(sizeof(liste_t));
+	listeAdjacence_t *liste = NULL;
+	liste = (listeAdjacence_t*) malloc(sizeof(listeAdjacence_t));
 	liste->tete = NULL;
 	return liste;
 }
 
-void inserer(liste_t *pliste, cellule_t *pcell)
+void insererCelluleAdjacence(listeAdjacence_t *pliste,
+		celluleAdjacence_t *pcell)
 {
 	if (pliste->tete != NULL)
 	{
@@ -26,9 +26,10 @@ void inserer(liste_t *pliste, cellule_t *pcell)
 	}
 }
 
-cellule_t *rechercher(liste_t *pliste, int value)
+celluleAdjacence_t *rechercherCelluleAdjacence(listeAdjacence_t *pliste,
+		int value)
 {
-	cellule_t *pcell = NULL;
+	celluleAdjacence_t *pcell = NULL;
 	pcell = pliste->tete;
 	while (value != pcell->noeud)
 	{
@@ -42,9 +43,10 @@ cellule_t *rechercher(liste_t *pliste, int value)
 	return pcell;
 }
 
-void supprimer(liste_t *pliste, cellule_t *pcell)
+void supprimerCelluleAdjacence(listeAdjacence_t *pliste,
+		celluleAdjacence_t *pcell)
 {
-	cellule_t *ptemp;
+	celluleAdjacence_t *ptemp;
 	ptemp = pliste->tete;
 	while (ptemp != pcell)
 	{
@@ -74,10 +76,10 @@ void supprimer(liste_t *pliste, cellule_t *pcell)
 	}
 }
 
-void detruireListe(liste_t *pliste)
+void detruireListeAdjacence(listeAdjacence_t *pliste)
 {
 	/* Pointeurs pour parcourir la liste et mémoriser "celui à détruire" */
-	cellule_t *ptemp = NULL, *pdel = NULL;
+	celluleAdjacence_t *ptemp = NULL, *pdel = NULL;
 	if (pliste != NULL)
 	{
 		ptemp = pliste->tete;
