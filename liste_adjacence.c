@@ -27,11 +27,11 @@ void insererCelluleAdjacence(listeAdjacence_t *pliste,
 }
 
 celluleAdjacence_t *rechercherCelluleAdjacence(listeAdjacence_t *pliste,
-		int value)
+		int noeud)
 {
 	celluleAdjacence_t *pcell = NULL;
 	pcell = pliste->tete;
-	while (value != pcell->noeud)
+	while (noeud != pcell->noeud)
 	{
 		if (pcell->succ != NULL)
 		{

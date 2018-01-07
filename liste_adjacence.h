@@ -10,7 +10,7 @@ typedef struct
 
 listeAdjacence_t *initialiserListeAdjacence(); /* Valide */
 void insererCelluleAdjacence(listeAdjacence_t *pliste, celluleAdjacence_t *pcell); /* Valide */
-celluleAdjacence_t *rechercherCelluleAdjacence(listeAdjacence_t *pliste, int value);
+celluleAdjacence_t *rechercherCelluleAdjacence(listeAdjacence_t *pliste, int noeud);
 void supprimerCelluleAdjacence(listeAdjacence_t *pliste, celluleAdjacence_t *pcell);
 void detruireListeAdjacence(listeAdjacence_t *pliste);
 

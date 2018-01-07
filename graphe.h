@@ -2,6 +2,7 @@
 #define GRAPHE_H_
 
 #include "liste_adjacence.h"
+#include "listeIncidence.h"
 
 typedef struct
 {
@@ -10,7 +11,7 @@ typedef struct
 	int evalue; /* évalué : 1 ; sinon 0 */
 	int complet; /* complet : 1 ; sinon 0 */
 	listeAdjacence_t **adj; /* Pointeur de tableau de pointeur de listeAdjacence_t */
-
+	listeIncidence_t **inc;
 	int **matrice_adj; /* Matrice d'adjacence, toujours carrée */
 } graphe_t;
 

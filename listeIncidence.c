@@ -8,7 +8,6 @@
 
 #include <stdlib.h>
 
-
 listeIncidence_t *initialiserListeIncidence()
 {
 	listeIncidence_t *liste = NULL;
@@ -35,16 +34,14 @@ void insererCelluleIncidence(listeIncidence_t *pliste,
 }
 
 celluleIncidence_t *rechercherCelluleIncidence(listeIncidence_t *pliste,
-		int origine, int extremite, int poids)
+		int origine, int extremite)
 {
 	celluleIncidence_t *pcell = NULL;
 	pcell = pliste->tete;
 	while ((origine != pcell->arete->origine
-			&& extremite != pcell->arete->extremite
-			&& poids != pcell->arete->poids)
+			&& extremite != pcell->arete->extremite)
 			|| (origine != pcell->arete->extremite
-					&& extremite != pcell->arete->origine
-					&& poids != pcell->arete->poids))
+					&& extremite != pcell->arete->origine))
 	{
 		if (pcell->succ != NULL)
 		{
@@ -100,6 +97,7 @@ void detruireListeIncidence(listeIncidence_t *pliste)
 		{
 			pdel = ptemp;
 			ptemp = ptemp->succ;
+			detruireArete(&(pdel->arete));
 			free(pdel);
 		}
 	}

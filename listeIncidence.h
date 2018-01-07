@@ -18,7 +18,7 @@ listeIncidence_t *initialiserListeIncidence(); /* Valide */
 void insererCelluleIncidence(listeIncidence_t *pliste,
 		celluleIncidence_t *pcell); /* Valide */
 celluleIncidence_t *rechercherCelluleIncidence(listeIncidence_t *pliste,
-		int origine, int extremite, int poids);
+		int origine, int extremite);
 void supprimerCelluleIncidence(listeIncidence_t *pliste,
 		celluleIncidence_t *pcell);
 void detruireListeIncidence(listeIncidence_t *pliste);

@@ -27,6 +27,7 @@ void creerListesAdjacences(graphe_t *graph, char *fileName)
 			fscanf(file, "%d", &graph->nSommets);
 			graph->adj = (listeAdjacence_t **) malloc(
 					graph->nSommets * sizeof(listeAdjacence_t *));
+
 			/* Créer tableau de listes adjacences */
 			for (i = 0; i < graph->nSommets; ++i)
 			{
@@ -36,6 +37,15 @@ void creerListesAdjacences(graphe_t *graph, char *fileName)
 		else if (strcmp(buffer, "oriente") == 0)
 		{
 			fscanf(file, "%d", &graph->oriente);
+			if (graph->oriente)
+			{
+				graph->inc = (listeIncidence_t**) malloc(
+						graph->nSommets * sizeof(listeIncidence_t*));
+				for (i = 0; i < graph->nSommets; ++i)
+				{
+					graph->inc[i] = initialiserListeIncidence();
+				}
+			}
 		}
 		else if (strcmp(buffer, "value") == 0)
 		{
@@ -61,21 +71,27 @@ void creerListesAdjacences(graphe_t *graph, char *fileName)
 					fscanf(file, "%s", buffer);
 					poids = atoi(buffer);
 					insererCelluleAdjacence(graph->adj[indice],
-							initialiserCelluleAdjacence(donnee, poids));
+							initialiserCelluleAdjacence(donnee));
+					insererCelluleIncidence(graph->inc[indice],
+							initialiserCelluleIncidence(
+									creerArete(indice, donnee, poids)));
 					if (!graph->oriente)
 					{
 						insererCelluleAdjacence(graph->adj[donnee],
-								initialiserCelluleAdjacence(indice, poids));
+								initialiserCelluleAdjacence(indice));
+						insererCelluleIncidence(graph->inc[donnee],
+								initialiserCelluleIncidence(
+										creerArete(donnee, indice, poids)));
 					}
 				}
 				else
 				{
 					insererCelluleAdjacence(graph->adj[indice],
-							initialiserCelluleAdjacence(donnee, 0));
+							initialiserCelluleAdjacence(donnee));
 					if (!graph->oriente)
 					{
 						insererCelluleAdjacence(graph->adj[donnee],
-								initialiserCelluleAdjacence(indice, 0));
+								initialiserCelluleAdjacence(indice));
 					}
 				}
 
@@ -92,6 +108,17 @@ void afficherListesAdjacences(graphe_t *graph)
 	{
 		printf("(%d)\t", i);
 		afficherListeAdjacence(&graph->adj[i][0]);
+		printf("\n");
+	}
+}
+
+void afficherListesIncidences(graphe_t *graph)
+{
+	int i;
+	for (i = 0; graph->nSommets; ++i)
+	{
+		printf("(%d)\t");
+		afficherListeIncidence(graph->inc[i]);
 		printf("\n");
 	}
 }
@@ -211,6 +238,7 @@ void detruireGraphe(graphe_t *graph)
 			detruireListeAdjacence(graph->adj[i]);
 		}
 		free(graph->adj);
+		graph->adj = NULL;
 	}
 	if (graph->matrice_adj != NULL)
 	{
@@ -220,6 +248,15 @@ void detruireGraphe(graphe_t *graph)
 		}
 		free(graph->matrice_adj);
 		graph->matrice_adj = NULL;
+	}
+	if (graph->inc != NULL)
+	{
+		for (i = 0; i < graph->nSommets; ++i)
+		{
+			detruireListeIncidence(graph->inc[i]);
+		}
+		free(graph->inc);
+		graph->inc = NULL;
 	}
 	free(graph);
 }
