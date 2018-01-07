@@ -8,20 +8,11 @@
 void afficherListeAdjacence(listeAdjacence_t *pliste)
 {
 	celluleAdjacence_t *ptemp;
-	ptemp = pliste->tete;
-	while (ptemp != NULL)
+	for (ptemp = pliste->tete; ptemp != NULL; ptemp = ptemp->succ)
 	{
 		printf("noeud : (%d) --> ", ptemp->noeud);
-		if (ptemp->succ != NULL)
-		{
-			ptemp = ptemp->succ;
-		}
-		else
-		{
-			printf("NULL");
-			ptemp = NULL;
-		}
 	}
+	printf("NULL");
 }
 
 void afficherListeIncidence(listeIncidence_t *pliste)

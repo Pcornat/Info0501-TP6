@@ -19,6 +19,7 @@ typedef struct
 void creerListesAdjacences(graphe_t *graph, char *fileName);
 /*Valide*/
 void afficherListesAdjacences(graphe_t *graph);
+void afficherListesIncidences(graphe_t *graph);
 void creerMatriceAdjacences(graphe_t *graph, char *fileName);
 void afficherMatriceAdjacences(graphe_t *graph);
 graphe_t *creerGraphe(char *fileName);

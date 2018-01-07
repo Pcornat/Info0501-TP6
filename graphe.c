@@ -5,7 +5,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "arete.h"
 #include "cellule_adjacence.h"
+#include "celluleIncidence.h"
 #include "outilsListe.h"
 
 void creerListesAdjacences(graphe_t *graph, char *fileName)
@@ -37,7 +39,11 @@ void creerListesAdjacences(graphe_t *graph, char *fileName)
 		else if (strcmp(buffer, "oriente") == 0)
 		{
 			fscanf(file, "%d", &graph->oriente);
-			if (graph->oriente)
+		}
+		else if (strcmp(buffer, "value") == 0)
+		{
+			fscanf(file, "%d", &graph->evalue);
+			if (graph->evalue)
 			{
 				graph->inc = (listeIncidence_t**) malloc(
 						graph->nSommets * sizeof(listeIncidence_t*));
@@ -46,10 +52,6 @@ void creerListesAdjacences(graphe_t *graph, char *fileName)
 					graph->inc[i] = initialiserListeIncidence();
 				}
 			}
-		}
-		else if (strcmp(buffer, "value") == 0)
-		{
-			fscanf(file, "%d", &graph->evalue);
 		}
 		else if (strcmp(buffer, "complet") == 0)
 		{
@@ -107,7 +109,7 @@ void afficherListesAdjacences(graphe_t *graph)
 	for (i = 0; i < graph->nSommets; ++i)
 	{
 		printf("(%d)\t", i);
-		afficherListeAdjacence(&graph->adj[i][0]);
+		afficherListeAdjacence(graph->adj[i]);
 		printf("\n");
 	}
 }
@@ -115,7 +117,7 @@ void afficherListesAdjacences(graphe_t *graph)
 void afficherListesIncidences(graphe_t *graph)
 {
 	int i;
-	for (i = 0; graph->nSommets; ++i)
+	for (i = 0; i < graph->nSommets; ++i)
 	{
 		printf("(%d)\t", i);
 		afficherListeIncidence(graph->inc[i]);
