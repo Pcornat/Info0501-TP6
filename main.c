@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "algo_parcours.h"
+#include "arete.h"
 #include "graphe.h"
 
 /**
@@ -10,6 +12,8 @@ int main(int argc, char *argv[])
 {
 	int sommetOrigine, sommetFin;
 	graphe_t *graphe = NULL;
+	arete_t *aretes = NULL;
+	int longueurTabAretes = 0;
 	if (argc != 4)
 	{
 		fprintf(stderr, "Erreur, 4 arguments requis.\n");
@@ -19,6 +23,9 @@ int main(int argc, char *argv[])
 	graphe = creerGraphe(argv[1]);
 	afficherListesAdjacences(graphe);
 	afficherMatriceAdjacences(graphe);
+	afficherListesIncidences(graphe);
+	longueurTabAretes = genererAcpmKruskal(graphe, aretes);
+	afficherAcpmKruskal(aretes, longueurTabAretes);
 	detruireGraphe(graphe);
 	return EXIT_SUCCESS;
 }
