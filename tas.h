@@ -13,8 +13,8 @@ typedef struct
 int parent(int i);
 int gauche(int i);
 int droite(int i);
-void entasserMin(tas_t * t, int i);
-void construireTasMin(tas_t * t);
+void entasserMax(tas_t * t, int i);
+void construireTasMax(tas_t * t);
 /*void construireTasMax(tas_t * t, int * tab, int longueur_tab);*/
 
 #endif

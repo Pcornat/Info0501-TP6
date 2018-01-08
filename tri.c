@@ -5,11 +5,11 @@
 void tri_par_tas(tas_t *t)
 {
 	int i;
-	construireTasMin(t);
-	for (i = t->longueur; i >= 1; --i)
+	construireTasMax(t);
+	for (i = t->longueur - 1; i >= 0; --i)
 	{
-		echanger(&t->tab[0], &t->tab[i]);
+		echanger(&(t->tab[0]), &(t->tab[i]));
 		--(t->taille);
-		entasserMin(t, 0);
+		entasserMax(t, 0);
 	}
 }

@@ -18,28 +18,28 @@ int gauche(int i) /* En C, gauche les indices sont impaires */
 	return (i <<= 1) + 1;
 }
 
-void entasserMin(tas_t * t, int i)
+void entasserMax(tas_t * t, int i)
 {
 	int g = gauche(i), d = droite(i), min;
-	if ((g < t->taille) && (t->tab[g].poids < t->tab[i].poids))
+	if ((g < t->taille) && (t->tab[g].poids > t->tab[i].poids))
 		min = g;
 	else
 		min = i;
-	if ((d < t->taille) && (t->tab[d].poids < t->tab[min].poids))
+	if ((d < t->taille) && (t->tab[d].poids > t->tab[min].poids))
 		min = d;
 	if (min != i)
 	{
 		echanger(&(t->tab[min]), &(t->tab[i]));
-		entasserMin(t, min);
+		entasserMax(t, min);
 	}
 }
 
-void construireTasMin(tas_t * t)
+void construireTasMax(tas_t * t)
 {
 	int i;
 	t->taille = t->longueur;
 	for (i = parent(t->longueur - 1); i >= 0; --i)
 	{
-		entasserMin(t, i);
+		entasserMax(t, i);
 	}
 }

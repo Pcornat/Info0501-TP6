@@ -2,7 +2,8 @@
 
 void echanger(arete_t *a, arete_t *b)
 {
-	arete_t p = *a;
+	arete_t p;
+	p = *a;
 	*a = *b;
 	*b = p;
 }
