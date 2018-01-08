@@ -101,19 +101,20 @@ void parcoursProfondeurRecursif(graphe_t *graph)
 	free(d), free(f), free(sommet);
 }
 
-int genererAcpmKruskal(graphe_t *graph, arete_t *aretesRetenues)
+int genererAcpmKruskal(graphe_t *graph, arete_t **aretesRetenues)
 {
 	set_t **tabEnsembleSommet = NULL;
 	celluleIncidence_t *cell = NULL;
 	cell_ensemble_t **tabSommet = NULL;
 	tas_t *tasArete = NULL;
-	int i, longueurTabArete = 1;
-	assert(aretesRetenues == NULL);
+	int i, j = 0, longueurTabArete;
+	assert(*aretesRetenues == NULL);
 	tabEnsembleSommet = (set_t**) malloc(graph->nSommets * sizeof(set_t*));
-	tabSommet = (cell_ensemble_t **) malloc(graph->nSommets * sizeof(cell_ensemble_t*));
+	tabSommet = (cell_ensemble_t **) malloc(
+			graph->nSommets * sizeof(cell_ensemble_t*));
 	tasArete = (tas_t*) malloc(sizeof(tas_t));
+	tasArete->longueur = (graph->nSommets * (graph->nSommets - 1)) / 2; /* Nombre maximal d'arêtes possibles dans tou graphe de n nœuds. */
 	tasArete->tab = NULL;
-	tasArete->longueur = 1;
 	for (i = 0; i < graph->nSommets; ++i)
 	{
 		/* Va servir de "traducteur" pour les différents sommets des listes d'adjacences */
@@ -123,46 +124,22 @@ int genererAcpmKruskal(graphe_t *graph, arete_t *aretesRetenues)
 	/**
 	 * Récupération de toutes les arêtes puis on les trie
 	 */
+	tasArete->tab = (arete_t*) malloc(tasArete->longueur * sizeof(arete_t));
+	(*aretesRetenues) = (arete_t*) malloc(
+			(tasArete->longueur - 1) * sizeof(arete_t));
+	longueurTabArete = tasArete->longueur - 1;
 	for (i = 0; i < graph->nSommets; ++i)
-	{
-		for (cell = graph->inc[i]->tete; cell != NULL; cell = cell->succ)
+		for (cell = graph->inc[i]->tete; cell != NULL; cell = cell->succ, ++j)
 		{
-			if (tasArete->tab == NULL)
-			{
-				tasArete->tab = (arete_t*) malloc(
-						tasArete->longueur * sizeof(arete_t));
-			}
-			else
-			{
-				tasArete->tab = (arete_t*) realloc(tasArete->tab,
-						tasArete->longueur * sizeof(arete_t));
-			}
-			tasArete->tab[tasArete->longueur - 1] = *(cell->arete);
-			++(tasArete->longueur);
+			tasArete->tab[j] = *(cell->arete);
 		}
-	}
-	tri_par_tas(tasArete); /* Tas trié par ordre croissant */
+	tri_par_tas(tasArete);
 	for (i = 0; i < tasArete->longueur; ++i)
 	{
 		if (trouverEnsemble(tabSommet[tasArete->tab[i].origine])
 				!= trouverEnsemble(tabSommet[tasArete->tab[i].extremite]))
 		{
-			if (aretesRetenues == NULL)
-			{
-				aretesRetenues = (arete_t*) malloc(
-						longueurTabArete * sizeof(arete_t));
-			}
-			else
-			{
-				aretesRetenues = (arete_t*) realloc(aretesRetenues,
-						longueurTabArete * sizeof(arete_t));
-			}
-			aretesRetenues[longueurTabArete - 1].origine =
-					tasArete->tab[i].origine;
-			aretesRetenues[longueurTabArete - 1].extremite =
-					tasArete->tab[i].extremite;
-			aretesRetenues[longueurTabArete - 1].poids = tasArete->tab[i].poids;
-			++longueurTabArete;
+			(*aretesRetenues)[i] = tasArete->tab[i];
 			union_ensemble(tabSommet[tasArete->tab[i].origine],
 					tabSommet[tasArete->tab[i].extremite]);
 		}
@@ -181,9 +158,6 @@ void afficherAcpmKruskal(arete_t *tabAretesRetenues, int longueurTabArete)
 	int i, poidsMax = 0;
 	for (i = 0; i < longueurTabArete; ++i)
 	{
-		printf("origine : %d\textremite : %d\tpoids : %d\n",
-				tabAretesRetenues[i].origine, tabAretesRetenues[i].extremite,
-				tabAretesRetenues[i].poids);
 		poidsMax += tabAretesRetenues[i].poids;
 	}
 	printf("Poids maximal : %d\n", poidsMax);
