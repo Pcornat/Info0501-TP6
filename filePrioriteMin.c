@@ -88,6 +88,17 @@ int isEmpty(filePrioriteMin *file)
 	return (file->noeuds == NULL) ? 1 : 0;
 }
 
+int chercherNoeud(filePrioriteMin *file, int noeud)
+{
+	int i;
+	for (i = 0; i < file->longueur; ++i)
+	{
+		if (file->noeuds[i] == noeud)
+			return 1;
+	}
+	return 0;
+}
+
 void detruireFileMin(filePrioriteMin **file)
 {
 	(*file)->longueur = (*file)->taille = 0;

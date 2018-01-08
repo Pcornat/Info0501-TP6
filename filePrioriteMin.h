@@ -23,6 +23,7 @@ void entasserMin(filePrioriteMin * file, int i);
 void construireTasMin(filePrioriteMin * file);
 int extraireMin(filePrioriteMin *file);
 int isEmpty(filePrioriteMin *file);
+int chercherNoeud(filePrioriteMin *file, int noeud);
 void detruireFileMin(filePrioriteMin **file);
 
 #endif /* FILEPRIORITEMIN_H_ */
