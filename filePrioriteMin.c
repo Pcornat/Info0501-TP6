@@ -7,6 +7,7 @@
 #include "filePrioriteMin.h"
 
 #include <stdlib.h>
+#include <limits.h>
 
 #include "util.h"
 
@@ -75,8 +76,21 @@ int extraireMin(filePrioriteMin *file)
 	int min;
 	min = file->noeuds[0];
 	file->noeuds[0] = file->noeuds[file->taille - 1];
+	file->noeuds[file->taille - 1] = INT_MAX;
 	--(file->longueur);
-	construireTasMin(file);
 	file->noeuds = (int*) realloc(file->noeuds, file->longueur);
+	construireTasMin(file);
 	return min;
+}
+
+int isEmpty(filePrioriteMin *file)
+{
+	return (file->noeuds == NULL) ? 1 : 0;
+}
+
+void detruireFileMin(filePrioriteMin **file)
+{
+	(*file)->longueur = (*file)->taille = 0;
+	free((*file)->noeuds), free(*file);
+	*file = NULL;
 }
