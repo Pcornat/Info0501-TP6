@@ -20,17 +20,17 @@ int gauche(int i) /* En C, gauche les indices sont impaires */
 
 void entasserMax(tas_t * t, int i)
 {
-	int g = gauche(i), d = droite(i), min;
+	int g = gauche(i), d = droite(i), max;
 	if ((g < t->taille) && (t->tab[g].poids > t->tab[i].poids))
-		min = g;
+		max = g;
 	else
-		min = i;
-	if ((d < t->taille) && (t->tab[d].poids > t->tab[min].poids))
-		min = d;
-	if (min != i)
+		max = i;
+	if ((d < t->taille) && (t->tab[d].poids > t->tab[max].poids))
+		max = d;
+	if (max != i)
 	{
-		echanger(&(t->tab[min]), &(t->tab[i]));
-		entasserMax(t, min);
+		echanger(&(t->tab[max]), &(t->tab[i]));
+		entasserMax(t, max);
 	}
 }
 
