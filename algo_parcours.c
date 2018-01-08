@@ -11,6 +11,7 @@
 #include "celluleIncidence.h"
 #include "ensemble.h"
 #include "file.h"
+#include "filePrioriteMin.h"
 #include "outilsGraphe.h"
 #include "tas.h"
 #include "tri.h"
@@ -125,14 +126,17 @@ int genererAcpmKruskal(graphe_t *graph, arete_t **aretesRetenues)
 	 * Récupération de toutes les arêtes puis on les trie
 	 */
 	tasArete->tab = (arete_t*) malloc(tasArete->longueur * sizeof(arete_t));
-	(*aretesRetenues) = (arete_t*) malloc(
-			(tasArete->longueur - 1) * sizeof(arete_t));
-	longueurTabArete = tasArete->longueur - 1;
 	for (i = 0; i < graph->nSommets; ++i)
 		for (cell = graph->inc[i]->tete; cell != NULL; cell = cell->succ, ++j)
 		{
 			tasArete->tab[j] = *(cell->arete);
 		}
+	tasArete->longueur = j;
+	tasArete->tab = (arete_t*) realloc(tasArete->tab,
+			tasArete->longueur * sizeof(arete_t));
+	(*aretesRetenues) = (arete_t) malloc(
+			(tasArete->longueur - 1) * sizeof(arete_t));
+	longueurTabArete = tasArete->longueur - 1;
 	tri_par_tas(tasArete);
 	for (i = 0; i < tasArete->longueur; ++i)
 	{
@@ -162,4 +166,41 @@ void afficherAcpmKruskal(arete_t *tabAretesRetenues, int longueurTabArete)
 	}
 	printf("Poids maximal : %d\n", poidsMax);
 	free(tabAretesRetenues);
+}
+
+int genererAcpmPrim(graphe_t *graph, arete_t **aretesRetenues,
+		int sommetOrigine)
+{
+	filePrioriteMin *file = NULL;
+	celluleAdjacence_t *cell = NULL;
+	int *key = NULL, *pere = NULL, i, u;
+	file = creerFileMin();
+	for (i = 0; i < graph->nSommets; ++i)
+	{
+		key[i] = INT_MAX;
+		pere[i] = INT_MAX; /* Implémentation par indice */
+		inserer(file, i);
+	}
+	while (!isEmpty(file))
+	{
+		u = extraireMin(file);
+		for (cell = graph->adj[u]->tete; cell != NULL; cell = cell->succ)
+		{
+
+		}
+	}
+	return 0;
+}
+
+void afficherAcpmPrim(arete_t *aretesRetenues, int longueurTab)
+{
+	int i, poidsMax = 0;
+	for (i = 0; i < longueurTab; ++i)
+	{
+		printf("origine : %d, extremite : %d, poids : %d\n",
+				aretesRetenues[i].origine, aretesRetenues[i].extremite,
+				aretesRetenues[i].poids);
+		poidsMax += aretesRetenues[i].poids;
+	}
+	printf("Poids maximal : %d\n", poidsMax);
 }

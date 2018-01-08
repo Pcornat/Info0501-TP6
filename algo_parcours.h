@@ -22,5 +22,6 @@ void visiter_PP(int u, graphe_t *graph, sommet_t *sommet, int *date, int *d,
 void parcoursProfondeurRecursif(graphe_t *graph);
 int genererAcpmKruskal(graphe_t *graph, arete_t **aretesRetenues);
 void afficherAcpmKruskal(arete_t *tabAretesRetenues, int longueurTabArete);
-
+int genererAcpmPrim(graphe_t *graph, arete_t **aretesRetenues, int sommetOrigine);
+void afficherAcpmPrim(arete_t *aretesRetenues, int longueurTab);
 #endif
