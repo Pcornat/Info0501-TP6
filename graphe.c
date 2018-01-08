@@ -1,6 +1,11 @@
+/**
+ * Auteur : Florent
+ *
+ * Ce fichier contient toutes les fonctions relatives au graphe en lui-même.
+ */
+
 #include "graphe.h"
 
-#include <bits/types/FILE.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
