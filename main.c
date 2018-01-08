@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 	afficherListesAdjacences(graphe);
 	afficherMatriceAdjacences(graphe);
 	afficherListesIncidences(graphe);
-	longueurTabAretes = genererAcpmKruskal(graphe, aretes);
+	longueurTabAretes = genererAcpmKruskal(graphe, &aretes);
 	afficherAcpmKruskal(aretes, longueurTabAretes);
 	detruireGraphe(graphe);
 	return EXIT_SUCCESS;

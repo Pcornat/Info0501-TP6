@@ -81,9 +81,6 @@ void creerListesAdjacences(graphe_t *graph, char *fileName)
 					{
 						insererCelluleAdjacence(graph->adj[donnee],
 								initialiserCelluleAdjacence(indice));
-						insererCelluleIncidence(graph->inc[donnee],
-								initialiserCelluleIncidence(
-										creerArete(donnee, indice, poids)));
 					}
 				}
 				else
