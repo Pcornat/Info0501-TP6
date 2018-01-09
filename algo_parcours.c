@@ -134,9 +134,8 @@ int genererAcpmKruskal(graphe_t *graph, arete_t **aretesRetenues)
 	tasArete->longueur = j;
 	tasArete->tab = (arete_t*) realloc(tasArete->tab,
 			tasArete->longueur * sizeof(arete_t));
-	(*aretesRetenues) = (arete_t) malloc(
-			(tasArete->longueur - 1) * sizeof(arete_t));
 	longueurTabArete = tasArete->longueur - 1;
+	(*aretesRetenues) = (arete_t*) malloc(longueurTabArete * sizeof(arete_t));
 	tri_par_tas(tasArete);
 	for (i = 0; i < tasArete->longueur; ++i)
 	{
@@ -168,39 +167,81 @@ void afficherAcpmKruskal(arete_t *tabAretesRetenues, int longueurTabArete)
 	free(tabAretesRetenues);
 }
 
-int genererAcpmPrim(graphe_t *graph, arete_t **aretesRetenues,
-		int sommetOrigine)
+/**
+ * Permet de chercher et trouver le poids d'une arête dans son tableau.
+ */
+int chercherArete(arete_t *a, int origine, int extremite, int longueurTab)
 {
-	filePrioriteMin *file = NULL;
-	celluleAdjacence_t *cell = NULL;
-	int *key = NULL, *pere = NULL, i, u;
-	file = creerFileMin();
-	for (i = 0; i < graph->nSommets; ++i)
+	int i;
+	for (i = 0; i < longueurTab; ++i)
 	{
-		key[i] = INT_MAX;
-		pere[i] = INT_MAX; /* Implémentation par indice */
-		inserer(file, i);
-	}
-	while (!isEmpty(file))
-	{
-		u = extraireMin(file);
-		for (cell = graph->adj[u]->tete; cell != NULL; cell = cell->succ)
+		if ((origine == a[i].origine && extremite == a[i].extremite)
+				|| (origine == a[i].extremite && extremite == a[i].origine))
 		{
-
+			return a[i].poids;
 		}
 	}
 	return 0;
 }
 
-void afficherAcpmPrim(arete_t *aretesRetenues, int longueurTab)
+void genererAcpmPrim(graphe_t *graph, int **key, int **pere, int sommetOrigine)
+{
+	filePrioriteMin *file = NULL;
+	celluleAdjacence_t *cellAd = NULL;
+	celluleIncidence_t *cell = NULL;
+	arete_t* tabAretes = NULL;
+	int i, j = 0, u, longueurTabArete = ((graph->nSommets
+			* (graph->nSommets - 1)) / 2) - 1, poids;
+	file = creerFileMin();
+	*key = (int*) malloc(graph->nSommets * sizeof(int));
+	*pere = (int*) malloc(graph->nSommets * sizeof(int));
+	tabAretes = (arete_t*) malloc(longueurTabArete * sizeof(arete_t));
+	for (i = 0; i < graph->nSommets; ++i)
+	{
+		(*key)[i] = INT_MAX;
+		(*pere)[i] = INT_MAX; /* Implémentation par indice */
+		inserer(file, i);
+		for (cell = graph->inc[i]->tete; cell != NULL; cell = cell->succ, ++j)
+		{
+			tabAretes[j] = *(cell->arete);
+		}
+	}
+	(*key)[sommetOrigine] = 0;
+	longueurTabArete = j;
+	tabAretes = (arete_t*) realloc(tabAretes,
+			longueurTabArete * sizeof(arete_t));
+	while (!isEmpty(file))
+	{
+		u = extraireMin(file);
+		for (cellAd = graph->adj[u]->tete; cellAd != NULL; cellAd =
+				cellAd->succ)
+		{
+			if (chercherNoeud(file, cellAd->noeud)
+					&& ((poids = chercherArete(tabAretes, u, cellAd->noeud,
+							longueurTabArete)) < (*key)[cellAd->noeud]))
+			{
+				(*pere)[cellAd->noeud] = u;
+				(*key)[cellAd->noeud] = poids;
+			}
+		}
+	}
+	detruireFileMin(&file);
+	free(tabAretes);
+}
+
+void afficherAcpmPrim(int **pere, int **key, int longueurTab)
 {
 	int i, poidsMax = 0;
 	for (i = 0; i < longueurTab; ++i)
 	{
-		printf("origine : %d, extremite : %d, poids : %d\n",
-				aretesRetenues[i].origine, aretesRetenues[i].extremite,
-				aretesRetenues[i].poids);
-		poidsMax += aretesRetenues[i].poids;
+		printf("origine : %d, extremite : %d, poids : %d\n", (*pere)[i], i,
+				(*key)[i]);
+		if ((*key)[i] != INT_MAX && (*pere)[i] != INT_MAX)
+		{
+			poidsMax += (*key)[i];
+		}
 	}
 	printf("Poids maximal : %d\n", poidsMax);
+	free(*key), free(*pere);
+	*key = *pere = NULL;
 }
