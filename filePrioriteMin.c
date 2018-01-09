@@ -78,7 +78,7 @@ int extraireMin(filePrioriteMin *file)
 	file->noeuds[0] = file->noeuds[file->taille - 1];
 	file->noeuds[file->taille - 1] = INT_MAX;
 	--(file->longueur);
-	file->noeuds = (int*) realloc(file->noeuds, file->longueur);
+	file->noeuds = (int*) realloc(file->noeuds, file->longueur * sizeof(int));
 	construireTasMin(file);
 	return min;
 }
