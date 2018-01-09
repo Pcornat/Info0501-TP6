@@ -6,26 +6,28 @@
 #include "graphe.h"
 
 /**
- * arguments : nom_texte sommet_origine_parcours sommet_à_atteindre_avec_PL_ou_PP
+ * arguments : nom_texte sommet_origine_Prim
  */
 int main(int argc, char *argv[])
 {
-	int sommetOrigine, sommetFin;
+	int sommetOrigine, *pere = NULL, *key = NULL;
 	graphe_t *graphe = NULL;
 	arete_t *aretes = NULL;
 	int longueurTabAretes = 0;
-	if (argc != 4)
+	if (argc != 3)
 	{
-		fprintf(stderr, "Erreur, 4 arguments requis.\n");
+		fprintf(stderr, "Erreur, 3 arguments requis.\n");
 		exit(EXIT_FAILURE);
 	}
-	sommetOrigine = atoi(argv[2]), sommetFin = atoi(argv[3]);
+	sommetOrigine = atoi(argv[2]);
 	graphe = creerGraphe(argv[1]);
 	afficherListesAdjacences(graphe);
 	afficherMatriceAdjacences(graphe);
 	afficherListesIncidences(graphe);
 	longueurTabAretes = genererAcpmKruskal(graphe, &aretes);
 	afficherAcpmKruskal(aretes, longueurTabAretes);
+	genererAcpmPrim(graphe, &key, &pere, sommetOrigine);
+	afficherAcpmPrim(&pere, &key, graphe->nSommets);
 	detruireGraphe(graphe);
 	return EXIT_SUCCESS;
 }
