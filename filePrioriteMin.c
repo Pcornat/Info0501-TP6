@@ -20,11 +20,12 @@ filePrioriteMin* creerFileMin(void)
 	return file;
 }
 
-void inserer(filePrioriteMin *file, int noeud)
+void inserer(filePrioriteMin *file, sommet_t *som)
 {
 	++(file->longueur);
-	file->noeuds = (int*) realloc(file->noeuds, file->longueur * sizeof(int));
-	file->noeuds[file->longueur - 1] = noeud;
+	file->noeuds = (sommet_t**) realloc(file->noeuds,
+			file->longueur * sizeof(sommet_t*));
+	file->noeuds[file->longueur - 1] = som;
 	construireTasMin(file);
 }
 
@@ -48,15 +49,15 @@ int gaucheMin(int i) /* En C, gauche les indices sont impaires */
 void entasserMin(filePrioriteMin *file, int i)
 {
 	int g = gaucheMin(i), d = droiteMin(i), min;
-	if ((g < file->taille) && (file->noeuds[g] < file->noeuds[i]))
+	if ((g < file->taille) && (file->noeuds[g]->key < file->noeuds[i]->key))
 		min = g;
 	else
 		min = i;
-	if ((d < file->taille) && (file->noeuds[d] < file->noeuds[min]))
+	if ((d < file->taille) && (file->noeuds[d]->key < file->noeuds[min]->key))
 		min = d;
 	if (min != i)
 	{
-		echangerMin(&(file->noeuds[min]), &(file->noeuds[i]));
+		echangerMin(file->noeuds[min], file->noeuds[i]);
 		entasserMin(file, min);
 	}
 }
@@ -71,33 +72,35 @@ void construireTasMin(filePrioriteMin * file)
 	}
 }
 
-int extraireMin(filePrioriteMin *file)
+sommet_t* extraireMin(filePrioriteMin *file)
 {
-	int min;
+	sommet_t *min;
 	min = file->noeuds[0];
 	file->noeuds[0] = file->noeuds[file->taille - 1];
-	file->noeuds[file->taille - 1] = INT_MAX;
+	file->noeuds[file->taille - 1] = NULL;
 	--(file->longueur);
-	file->noeuds = (int*) realloc(file->noeuds, file->longueur * sizeof(int));
+	file->noeuds = (sommet_t**) realloc(file->noeuds,
+			file->longueur * sizeof(sommet_t*));
 	construireTasMin(file);
 	return min;
 }
 
 int isEmpty(filePrioriteMin *file)
 {
-	return (file->noeuds == NULL) ? 1 : 0;
+	return (file->longueur == 0) ? 1 : 0;
 }
 
-int chercherNoeud(filePrioriteMin *file, int noeud)
-{
-	int i;
-	for (i = 0; i < file->longueur; ++i)
-	{
-		if (file->noeuds[i] == noeud)
-			return 1;
-	}
-	return 0;
-}
+/*
+ int chercherNoeud(filePrioriteMin *file, int noeud)
+ {
+ int i;
+ for (i = 0; i < file->longueur; ++i)
+ {
+ if (file->noeuds[i] == noeud)
+ return 1;
+ }
+ return 0;
+ }*/
 
 void detruireFileMin(filePrioriteMin **file)
 {

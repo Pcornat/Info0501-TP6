@@ -8,9 +8,9 @@ void echanger(arete_t *a, arete_t *b)
 	*b = p;
 }
 
-void echangerMin(int *a, int *b)
+void echangerMin(sommet_t *a, sommet_t *b)
 {
-	int p;
+	sommet_t p;
 	p = *a;
 	*a = *b;
 	*b = p;

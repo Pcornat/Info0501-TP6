@@ -10,9 +10,10 @@
  */
 int main(int argc, char *argv[])
 {
-	int sommetOrigine, *pere = NULL, *key = NULL;
+	int sommetOrigine;
 	graphe_t *graphe = NULL;
 	arete_t *aretes = NULL;
+	sommet_t *tabSommets = NULL;
 	int longueurTabAretes = 0;
 	if (argc != 3)
 	{
@@ -26,8 +27,8 @@ int main(int argc, char *argv[])
 	afficherListesIncidences(graphe);
 	longueurTabAretes = genererAcpmKruskal(graphe, &aretes);
 	afficherAcpmKruskal(aretes, longueurTabAretes);
-	genererAcpmPrim(graphe, &key, &pere, sommetOrigine);
-	afficherAcpmPrim(&pere, &key, graphe->nSommets);
+	genererAcpmPrim(graphe, &tabSommets, sommetOrigine);
+	afficherAcpmPrim(&tabSommets, graphe->nSommets);
 	detruireGraphe(graphe);
 	return EXIT_SUCCESS;
 }
