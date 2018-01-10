@@ -170,33 +170,15 @@ void afficherAcpmKruskal(arete_t *tabAretesRetenues, int longueurTabArete)
 	free(tabAretesRetenues);
 }
 
-/**
- * Permet de chercher et trouver le poids d'une arête dans son tableau.
- */
-int chercherArete(arete_t *a, int origine, int extremite, int longueurTab)
-{
-	int i;
-	for (i = 0; i < longueurTab; ++i)
-	{
-		if ((origine == a[i].origine && extremite == a[i].extremite)
-				|| (origine == a[i].extremite && extremite == a[i].origine))
-		{
-			return a[i].poids;
-		}
-	}
-	return 0;
-}
-
 void genererAcpmPrim(graphe_t *graph, sommet_t **tab, int sommetOrigine)
 {
 	filePrioriteMin *file = NULL;
 	celluleIncidence_t *v = NULL;
 	sommet_t *u;
-	int i, j = 0, longueurTabArete = ((graph->nSommets * (graph->nSommets - 1))
-			/ 2) - 1;
+	int i;
 	file = creerFileMin();
 	(*tab) = (sommet_t*) malloc(graph->nSommets * sizeof(sommet_t));
-	for (i = 0, longueurTabArete = 1; i < graph->nSommets; ++i)
+	for (i = 0; i < graph->nSommets; ++i)
 	{
 		(*tab)[i].noeud = i;
 		(*tab)[i].key = INT_MAX;

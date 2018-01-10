@@ -26,4 +26,5 @@ int genererAcpmKruskal(graphe_t *graph, arete_t **aretesRetenues);
 void afficherAcpmKruskal(arete_t *tabAretesRetenues, int longueurTabArete);
 void genererAcpmPrim(graphe_t *graph, sommet_t **tab, int sommetOrigine);
 void afficherAcpmPrim(sommet_t **tab, int longueurTab);
+
 #endif
