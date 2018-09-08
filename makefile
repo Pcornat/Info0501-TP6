@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-pipe -ansi -W -Wall -Wextra -Wpadded -pedantic -fmessage-length=0
+CFLAGS=-pipe -ansi -W -Wall -Wextra -Wpadded -pedantic -fmessage-length=0 -fstack-protector-strong
 LDFLAGS=-pipe
 SRC=$(wildcard *.c)
 OBJ=$(SRC:.c=.o)
@@ -10,7 +10,7 @@ EXEC=graphe
 ifeq ($(DEBUG), yes)
 	CFLAGS += -g3
 else
-	CFLAGS += -O3
+	CFLAGS += -O2 -ftree-vectorize
 endif
 
 all: clean depend $(EXEC)
